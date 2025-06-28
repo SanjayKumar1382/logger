@@ -1,56 +1,85 @@
-Logger Library
+# 📘 Logger Library
 
-Requirements
-1. You have to design and implement a logger library that helps applications log messages.
-2. Client/application make use of your logger library to log messages to a sink
-3. Message
- 	a. has content which is of type string
- 	b. has a level associated with it
- 	c. is directed to a destination (sink)
- 	d. has namespace associated with it to identify the part of application that sent the message
+A customizable logger library that helps applications log messages to various destinations such as files, databases, or the console.
 
-4. Sink
-	a. This is the destination for a message (eg text file, database, console, etc)
-	b. Sink is tied to one or more message level
-	c. one or more message level can have the same sink
-5. Logger library
-	a. Accepts messages from client(s)
-	b. Routes messages to appropriate sink
-	c. Supports following message level: DEBUG, INFO, WARN, ERROR, FATAL
-	d. enriches message with current timestamp while directing message to a sink
-	e. requires configuration during setup
-6. Sending messages
-	a. Sink need not be mentioned while sending a message to the logger library.
-	b. A message level is tied to a sink.
-	c. You specify message content, level and namespace while sending a message
-7. Logger configuration (see sample below)
-	a. Specifies all the details required to use the logger library.
-	Example:
-		i. 	time format
-		ii. logging level
-		iii.sink type
-		iv.	details required for sink (eg file location))
-			this depends on sink type
+---
 
-Sample Config1: text file as sink
-ts_format:ddmmyyyyhhmmss
-log_level:INFO sink_type:FILE
-file_location:/var/log/app/info.log
-(optional)thread_model:SINGLE
-(optional)write_mode:SYNC
+## ✅ Requirements
 
-Sample Config2: database as sink
-ts_format:dd:mm:yyyy hh:mm:ss
-log_level:ERROR sink_type:DB
-dbhost:<ip address>
-dbport:<db port>
-(optional)thread_model:MULTI
-(optional)write_mode:ASYNC
+### 1. Design
 
+- Have to design and implement a logger library that helps applications log messages.
+- Client/application uses your logger library to log messages to a sink.
 
-Sample execution
-INFO [2022-06-27 11:14:44,942] Empty txnIds Nothing to fetch
-WARN [2022-06-27 11:28:06,229] No user found for the phone number
+### 2. Message Structure
 
-Log Rotation
-application.log application.log.2.gz application.log.1.gz
+Each message:
+
+- Has **content** (type: `string`)
+- Has a **level** associated with it
+- Is directed to a **destination** (sink)
+- Has a **namespace** to identify the part of the application that sent the message
+
+### 3. Sink
+
+A sink is the destination for a message:
+
+- Could be a **text file**, **database**, **console**, etc.
+- A sink is tied to one or more **message levels**
+- One or more message levels can use the same sink
+
+### 4. Logger Library Capabilities
+
+The logger library:
+
+- Accepts messages from one or more clients
+- Routes messages to the appropriate sink(s)
+- Supports the following message levels:
+  - `DEBUG`
+  - `INFO`
+  - `WARN`
+  - `ERROR`
+  - `FATAL`
+- Enriches each message with the **current timestamp**
+- Requires **configuration** during setup
+
+### 5. Sending Messages
+
+- The sink is **not specified** while sending a message to the logger
+- The logger uses the **configured level-to-sink mapping**
+- Required inputs while sending a message:
+  - `message content`
+  - `level`
+  - `namespace`
+
+---
+
+## ⚙️ Logger Configuration
+
+Specifies all the details required to use the logger library.
+
+### Configuration Fields
+
+- `ts_format`: timestamp format
+- `log_level`: minimum logging level
+- `sink_type`: type of sink (e.g., FILE, DB)
+- Sink-specific details like:
+  - `file_location` for FILE sink
+  - `dbhost`, `dbport` for DB sink
+- Optional:
+  - `thread_model`: `SINGLE` or `MULTI`
+  - `write_mode`: `SYNC` or `ASYNC`
+
+---
+
+## 📄 Sample Configuration
+
+### Sample Config 1: Text File as Sink
+
+```ini
+ts_format: ddmmyyyyhhmmss
+log_level: INFO
+sink_type: FILE
+file_location: /var/log/app/info.log
+thread_model: SINGLE        # Optional
+write_mode: SYNC            # Optional
